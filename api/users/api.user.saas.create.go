@@ -16,6 +16,7 @@ type ReqSaasCreate struct {
 }
 
 // Notice: 为一个securityUser添加一个saas用户(企业账号认证, 共享一套登录凭证), 而不是从头创建一个新账号
+// 认证成企业，并成为企业的超级管理员
 func apiCreateSaasUser(ctx server.Context) {
 
 	var err error

@@ -32,23 +32,21 @@ type MenuParam struct {
 }
 
 type ReqMenuForm struct {
-	Id         string        `json:"id"`
-	ParentId   string        `json:"parentId"`
-	Name       string        `json:"name"`
-	Visible    int           `json:"visible"`
-	Icon       string        `json:"icon"`
-	Sort       int           `json:"sort"`
-	RouteName  string        `json:"routeName"`
-	RoutePath  string        `json:"routePath"`
-	Component  string        `json:"component"`
-	Redirect   string        `json:"redirect"`
-	Type       int           `json:"type"`
-	Perm       string        `json:"perm"`
-	HasPerm    bool          `json:"hasPerm"`
-	KeepAlive  int           `json:"keepAlive"`
-	AlwaysShow int           `json:"alwaysShow"`
-	Params     []MenuParam   `json:"params"`
-	Group      def.MenuGroup `json:"group"` // 菜单所属程序组
+	Id        string        `json:"id"`
+	ParentId  string        `json:"parentId"`
+	Name      string        `json:"name"`
+	Visible   int           `json:"visible"`
+	Icon      string        `json:"icon"`
+	Sort      int           `json:"sort"`
+	RouteName string        `json:"routeName"`
+	RoutePath string        `json:"routePath"`
+	Component string        `json:"component"`
+	Type      int           `json:"type"`
+	Perm      string        `json:"perm"`
+	HasPerm   bool          `json:"hasPerm"`
+	KeepAlive int           `json:"keepAlive"`
+	Params    []MenuParam   `json:"params"`
+	Group     def.MenuGroup `json:"group"` // 菜单所属程序组 - project(app) - menu category
 }
 
 type Menu struct {
@@ -61,12 +59,10 @@ type Menu struct {
 	RouteName  string        `json:"routeName"`
 	RoutePath  string        `json:"routePath"`
 	Component  string        `json:"component"`
-	Redirect   string        `json:"redirect"`
 	Type       int           `json:"type"`
 	Perm       string        `json:"perm"`
 	HasPerm    bool          `json:"hasPerm"`
 	KeepAlive  int           `json:"keepAlive"`
-	AlwaysShow int           `json:"alwaysShow"`
 	Params     []MenuParam   `json:"params"`
 	Hidden     int           `json:"hidden"`
 	Group      def.MenuGroup `json:"group"` // 菜单所属程序组

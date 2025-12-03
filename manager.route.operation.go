@@ -2,8 +2,6 @@ package www
 
 import (
 	"errors"
-	"strings"
-
 	"github.com/lishimeng/www/def"
 	"github.com/lishimeng/www/dto"
 )
@@ -81,10 +79,10 @@ var errRootRoutePath = errors.New("顶层菜单的路由路径必须以'/'开头
 // validateMenu 验证菜单数据
 func validateMenu(menu *dto.ReqMenuForm) error {
 	// 如果是顶层菜单（parentId = 0），路由路径必须以"/"开头
-	if menu.ParentId == "0" && menu.RoutePath != "" {
-		if !strings.HasPrefix(menu.RoutePath, "/") {
-			return errRootRoutePath
-		}
-	}
+	//if menu.ParentId == "0" && menu.RoutePath != "" {
+	//	if !strings.HasPrefix(menu.RoutePath, "/") {
+	//		return errRootRoutePath
+	//	}
+	//}
 	return nil
 }

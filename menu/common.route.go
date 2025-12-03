@@ -1,31 +1,10 @@
 package menu
 
 import (
-	"strings"
-	"unicode"
-
 	"github.com/lishimeng/www/def"
 	"github.com/lishimeng/www/dto"
+	"strings"
 )
-
-func ToCamelCase(s string) string {
-	s = strings.TrimPrefix(s, "/")
-	if s == "" {
-		return ""
-	}
-	words := strings.FieldsFunc(s, func(r rune) bool {
-		return r == '-'
-	})
-	for i, word := range words {
-		if word == "" {
-			continue
-		}
-		runes := []rune(word)
-		runes[0] = unicode.ToUpper(runes[0])
-		words[i] = string(runes)
-	}
-	return strings.Join(words, "")
-}
 
 func buildParam(ls []dto.MenuParam) map[string]string {
 	if len(ls) == 0 {
@@ -64,7 +43,7 @@ func BuildRoutes(tree []*dto.Menu, path string) (b []*dto.MenuRoute) {
 					Name:      n.RoutePath,
 					Path:      n.RoutePath,
 					Component: "Layout",
-					Redirect:  buildRedirect(path, children[0]),
+					Redirect:  buildRedirect(n.RoutePath, children[0]),
 					Children:  children,
 					Meta: &dto.MenuRouteMeta{
 						Title:      n.Name,
@@ -76,7 +55,7 @@ func BuildRoutes(tree []*dto.Menu, path string) (b []*dto.MenuRoute) {
 				})
 			} else {
 				child := &dto.MenuRoute{
-					Name:      ToCamelCase(n.RoutePath),
+					Name:      n.RouteName,
 					Path:      "",
 					Component: n.Component,
 					Meta: &dto.MenuRouteMeta{
@@ -105,7 +84,7 @@ func BuildRoutes(tree []*dto.Menu, path string) (b []*dto.MenuRoute) {
 					continue
 				}
 				b = append(b, &dto.MenuRoute{
-					Name:      ToCamelCase(n.RoutePath),
+					Name:      n.RouteName,
 					Path:      strings.TrimPrefix(n.RoutePath, "/"),
 					Component: "",
 					Redirect:  buildRedirect(path+n.RoutePath, children[0]),
@@ -119,7 +98,7 @@ func BuildRoutes(tree []*dto.Menu, path string) (b []*dto.MenuRoute) {
 					}})
 			} else {
 				b = append(b, &dto.MenuRoute{
-					Name:      ToCamelCase(n.RoutePath),
+					Name:      n.RouteName,
 					Path:      strings.TrimPrefix(n.RoutePath, "/"),
 					Component: n.Component,
 					Meta: &dto.MenuRouteMeta{

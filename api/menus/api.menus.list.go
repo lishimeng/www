@@ -24,11 +24,15 @@ func getMenuListApi(ctx server.Context) {
 	var routeOptManager www.RouteOperationManager
 	_ = container.Get(&routeOptManager)
 	list := routeOptManager.GetProjectRoutes(keywords, menuGroupParam)
-
-	for _, item := range list {
-		flat = append(flat, &item)
+	if len(keywords) == 0 {
+		for _, item := range list {
+			flat = append(flat, &item)
+		}
+		resp.Data = menu.BuildTree(flat)
+	} else {
+		// 如果按关键字筛选，不构建树，扁平化显式
+		resp.Data = list
 	}
-	resp.Data = menu.BuildTree(flat)
 	resp.Code = http.StatusOK
 	ctx.Json(resp)
 }

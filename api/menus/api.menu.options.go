@@ -24,6 +24,8 @@ func getMenuOptionsApi(ctx server.Context) {
 
 	// 获取menuGroup参数，如果未指定则使用当前程序的MenuCategory
 	menuGroupParam := ctx.C.URLParamDefault("menuGroup", "")
+	// 剪枝，在UI配置中预先避免循环
+	pruning := ctx.C.URLParam("pruning")
 	var routeOptMgr www.RouteOperationManager
 	_ = container.Get(&routeOptMgr)
 	list, err := routeOptMgr.GetRouteOptions(menuGroupParam)
@@ -41,7 +43,7 @@ func getMenuOptionsApi(ctx server.Context) {
 
 	// 构建树形结构，使用buildTree函数
 	// 前端需要树形结构来正确显示菜单名称和层级关系
-	treeData := menu.BuildTree(flat)
+	treeData := menu.BuildTree(flat, pruning)
 	if treeData == nil {
 		// 确保返回空数组而不是 nil
 		resp.Data = []*dto.MenuOption{}
