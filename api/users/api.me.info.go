@@ -65,3 +65,28 @@ func handleMyPerms(userCode string) (list []dto.AuthUserPerm) {
 	list = permManager.GetUserPerms(userCode)
 	return
 }
+
+func apiMyOrgs(ctx server.Context) {
+	var resp app.ResponseWrapper
+	var err error
+	var list []dto.SaasUser
+	var m = getSaasManager()
+	uid := auth.GetUid(ctx)
+	if len(uid) == 0 {
+		log.Info("no uid")
+		resp.Code = http.StatusBadRequest
+		ctx.Json(resp)
+		return
+	}
+	list, err = m.UserSaasOrgs(uid)
+	if err != nil {
+		log.Info("get user saas orgs error")
+		resp.Code = http.StatusBadRequest
+		ctx.Json(resp)
+		return
+	}
+	resp.Code = http.StatusOK
+	resp.Data = list
+	resp.Message = "success"
+	ctx.Json(resp)
+}

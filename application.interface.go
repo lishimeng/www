@@ -70,6 +70,7 @@ type IdentityDomainHandler interface {
 	TxDelIdentity(tx persistence.TxContext, code string) (err error)
 	TxGetIdentities(ctx persistence.TxContext, securityUserFilter string, limits ...int) ([]dto.Identity, error)
 	GetIdentityPage(pager *app.Pager[dto.Identity]) (err error)
+	DetectIdentityType(identityCode string) def.IdentityType
 }
 
 type MenuDomainHandler interface {
@@ -113,20 +114,33 @@ type IdentityManager interface {
 	Unbind(identityCode string, securityUserCode string) (err error)
 	Page(pager *app.Pager[dto.Identity]) (err error)
 	UserIdentities(userCode string) (list []dto.Identity, err error)
+	DetectIdentityType(identityCode string) def.IdentityType
 }
 
 type SaasManager interface {
+	UserSaasOrgs(userCode string) (list []dto.SaasUser, err error)
+	SaasOrg(code string) (one dto.SaasOrganization, err error)
 }
 type SaasDomainHandler interface {
+	GetUserSaasOrgs(userCode string) (list []dto.SaasUser, err error)
+	GetSaasOrg(code string) (one dto.SaasOrganization, err error)
 }
 
 type SaasOperationManager interface {
-	CreateSaas(userCode string, orgCode string) (u dto.SaasUser, err error)
+	CreateSaas(userCode string, orgCode string, name string) (u dto.SaasUser, err error)
 	SaasList(orgCode string, pager *app.Pager[dto.SaasUser]) (err error)
+	AllOrgs() (list []dto.SaasOrganization, err error)
+	JoinOrganization(orgCode string, userCode string, userName string) (u dto.SaasUser, err error)
+	LeaveOrganization(orgCode string, userCode string) (err error)
 }
 type SaasOperationDomainHandler interface {
-	CreateSaasUser(userCode string, orgCode string) (u dto.SaasUser, err error)
+	TxCreateSaasOrg(tx persistence.TxContext, orgCode string, name string, admin string) (org dto.SaasOrganization, err error)
+	TxAddOrgUser(tx persistence.TxContext, dto *dto.SaasUser) (err error)
+	TxGetOrg(tx persistence.TxContext, orgCode string) (org dto.SaasOrganization, err error)
+	TxDelOrgUser(tx persistence.TxContext, code string) (err error)
+	GetAllOrgs() (list []dto.SaasOrganization, err error)
 	SaasUserPage(orgCode string, pager *app.Pager[dto.SaasUser]) (err error)
+	TxGetSaasUser(tx persistence.TxContext, code string) (u dto.SaasUser, err error)
 }
 
 type DomainHandler interface {

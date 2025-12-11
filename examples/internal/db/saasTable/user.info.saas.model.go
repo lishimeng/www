@@ -2,6 +2,7 @@ package saasTable
 
 import (
 	"github.com/lishimeng/app-starter"
+	"github.com/lishimeng/www/def"
 	"github.com/lishimeng/www/dto"
 )
 
@@ -21,4 +22,12 @@ func (s *SaasUserInfo) Transform(dst *dto.SaasUser) {
 	dst.SecurityCode = s.SecurityCode
 	dst.Name = s.Name
 	dst.Code = s.Code
+	dst.Status = def.SaasUserStatus(s.Status)
+}
+
+func (s *SaasUserInfo) Convert(src dto.SaasUser) {
+	s.EnterpriseCode = src.EnterpriseCode
+	s.SecurityCode = src.SecurityCode
+	s.Name = src.Name
+	s.Code = src.Code
 }

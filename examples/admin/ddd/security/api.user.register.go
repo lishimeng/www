@@ -4,8 +4,10 @@ import (
 	"github.com/lishimeng/app-starter"
 	"github.com/lishimeng/app-starter/server"
 	"github.com/lishimeng/go-log"
+	"github.com/lishimeng/www"
 	"github.com/lishimeng/www/def"
 	"github.com/lishimeng/www/examples/internal/db/auth/usersTable"
+	"github.com/lishimeng/x/container"
 	"net/http"
 )
 
@@ -43,12 +45,15 @@ func registerApi(ctx server.Context) {
 		return
 	}
 
+	var identityManager www.IdentityManager
+	_ = container.Get(&identityManager)
+
 	// 确定身份类型：优先使用请求中的类型，否则自动判断
 	var identityType def.IdentityType
 	if req.IdentityType != nil {
 		identityType = def.IdentityType(*req.IdentityType)
 	} else {
-		identityType = def.DetectIdentityType(req.IdentityCode)
+		identityType = identityManager.DetectIdentityType(req.IdentityCode)
 	}
 
 	_, user, err := CreateSecurityUser(req.IdentityCode, identityType, req.Platform)

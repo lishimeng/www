@@ -1,27 +1,24 @@
 package users
 
 import (
-	"net/http"
-
 	"github.com/lishimeng/app-starter"
 	"github.com/lishimeng/app-starter/server"
 	"github.com/lishimeng/go-log"
 	"github.com/lishimeng/www"
 	"github.com/lishimeng/x/container"
+	"net/http"
 )
 
-type ReqSaasCreate struct {
+type ReqSaasJoin struct {
 	UserCode string `json:"userCode"`
 	OrgCode  string `json:"orgCode"`
-	Name     string `json:"name"`
+	UserName string `json:"userName"`
 }
 
-// Notice: 为一个securityUser添加一个saas用户(企业账号认证, 共享一套登录凭证), 而不是从头创建一个新账号
-// 认证成企业，并成为企业的超级管理员
-func apiCreateSaasUser(ctx server.Context) {
+func apiSaasJoin(ctx server.Context) {
 
 	var err error
-	var req ReqSaasCreate
+	var req ReqSaasJoin
 	var resp app.ResponseWrapper
 
 	err = ctx.C.ReadJSON(&req)
@@ -37,9 +34,10 @@ func apiCreateSaasUser(ctx server.Context) {
 		ctx.Json(resp)
 		return
 	}
+
 	var saasOptMgr www.SaasOperationManager
 	_ = container.Get(&saasOptMgr)
-	u, err := saasOptMgr.CreateSaas(req.UserCode, req.OrgCode, req.Name)
+	u, err := saasOptMgr.JoinOrganization(req.OrgCode, req.UserCode, req.UserName)
 
 	if err != nil {
 		log.Info("创建saas用户失败")

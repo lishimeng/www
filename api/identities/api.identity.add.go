@@ -37,16 +37,16 @@ func apiAddIdentity(ctx server.Context) {
 		return
 	}
 
+	var identityManager www.IdentityManager
+	_ = container.Get(&identityManager)
+
 	// 确定身份类型：优先使用请求中的类型，否则自动判断
 	var identityType def.IdentityType
 	if req.IdentityType != nil {
 		identityType = def.IdentityType(*req.IdentityType)
 	} else {
-		identityType = def.DetectIdentityType(req.IdentityCode)
+		identityType = identityManager.DetectIdentityType(req.IdentityCode)
 	}
-
-	var identityManager www.IdentityManager
-	_ = container.Get(&identityManager)
 
 	err = identityManager.Bind(req.IdentityCode, req.UserCode, identityType)
 	if err != nil {

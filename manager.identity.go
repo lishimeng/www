@@ -107,3 +107,7 @@ func (im *DbIdentityManager) Unbind(identityCode string, securityUserCode string
 	})
 	return
 }
+
+func (im *DbIdentityManager) DetectIdentityType(identityCode string) def.IdentityType {
+	return im.domain.DetectIdentityType(identityCode)
+}

@@ -1,28 +1,24 @@
 package users
 
 import (
-	"net/http"
-
 	"github.com/lishimeng/app-starter"
 	"github.com/lishimeng/app-starter/server"
 	"github.com/lishimeng/go-log"
 	"github.com/lishimeng/www"
 	"github.com/lishimeng/x/container"
+	"net/http"
 )
 
-type ReqSaasCreate struct {
+type ReqSaasLeave struct {
 	UserCode string `json:"userCode"`
 	OrgCode  string `json:"orgCode"`
-	Name     string `json:"name"`
 }
 
-// Notice: 为一个securityUser添加一个saas用户(企业账号认证, 共享一套登录凭证), 而不是从头创建一个新账号
-// 认证成企业，并成为企业的超级管理员
-func apiCreateSaasUser(ctx server.Context) {
+func apiSaasLeave(ctx server.Context) {
 
 	var err error
-	var req ReqSaasCreate
-	var resp app.ResponseWrapper
+	var req ReqSaasJoin
+	var resp app.Response
 
 	err = ctx.C.ReadJSON(&req)
 	if err != nil {
@@ -37,12 +33,13 @@ func apiCreateSaasUser(ctx server.Context) {
 		ctx.Json(resp)
 		return
 	}
+
 	var saasOptMgr www.SaasOperationManager
 	_ = container.Get(&saasOptMgr)
-	u, err := saasOptMgr.CreateSaas(req.UserCode, req.OrgCode, req.Name)
+	err = saasOptMgr.LeaveOrganization(req.OrgCode, req.UserCode)
 
 	if err != nil {
-		log.Info("创建saas用户失败")
+		log.Info("退出saas组织失败")
 		log.Info(err)
 		resp.Code = http.StatusInternalServerError
 		resp.Message = err.Error()
@@ -51,6 +48,5 @@ func apiCreateSaasUser(ctx server.Context) {
 	}
 
 	resp.Code = http.StatusOK
-	resp.Data = u
 	ctx.Json(resp)
 }

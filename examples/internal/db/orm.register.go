@@ -20,7 +20,6 @@ func RegisterTables() (models []interface{}) {
 		new(usersTable.AuthIdentity),
 		new(usersTable.AuthSecurityInfo),
 		new(saasTable.SaasOrganization),
-		new(saasTable.SaasOrganizationUser),
 		new(saasTable.SaasUserInfo),
 	)
 	return
