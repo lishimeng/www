@@ -11,6 +11,7 @@ func (h handler) GetUserRoleList(userCode string) (role []dto.UserRole, err erro
 	var models []permissionsTable.AuthUserRoles
 	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles)).
 		Filter("UserCode", userCode).
+		OrderBy("RoleCategoryCode", "Id").
 		All(&models)
 	if err != nil {
 		return
@@ -26,6 +27,7 @@ func (h handler) GetUserRoleList(userCode string) (role []dto.UserRole, err erro
 func (h handler) GetAllRole() (list []dto.Role, err error) {
 	var model []permissionsTable.AuthRoles
 	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthRoles)).
+		OrderBy("-RoleCategoryCode", "Id").
 		All(&model)
 	if err != nil {
 		return
@@ -69,10 +71,10 @@ func (h handler) GetRoleByCode(roleCode string) (role dto.Role, err error) {
 	return
 }
 
-func (h handler) CreateUserRole(userCode, roleCode string) (ur dto.UserRole, err error) {
+func (h handler) CreateUserRole(saasUserCode, roleCode string) (ur dto.UserRole, err error) {
 	// 先检查重复
 	repeated := app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles)).
-		Filter("UserCode", userCode).
+		Filter("UserCode", saasUserCode).
 		Filter("RoleCode", roleCode).
 		Exist()
 	if repeated {
@@ -80,7 +82,7 @@ func (h handler) CreateUserRole(userCode, roleCode string) (ur dto.UserRole, err
 		return
 	}
 	var model permissionsTable.AuthUserRoles
-	model.UserCode = userCode
+	model.SaasUserCode = saasUserCode
 	model.RoleCode = roleCode
 	model.IsGlobal = 1
 	// todo: 暂时全global，后续升级; 与 role的 global字段一致？
@@ -89,9 +91,9 @@ func (h handler) CreateUserRole(userCode, roleCode string) (ur dto.UserRole, err
 	return
 }
 
-func (h handler) DeleteUserRole(userCode, roleCode string) (err error) {
+func (h handler) DeleteUserRole(saasUserCode, roleCode string) (err error) {
 	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles)).
-		Filter("UserCode", userCode).
+		Filter("SaasUserCode", saasUserCode).
 		Filter("RoleCode", roleCode).
 		Delete()
 	return
@@ -101,12 +103,12 @@ func (h handler) GetUserRole(filterUserCode, filterRoleCode string) (list []dto.
 	var models []permissionsTable.AuthUserRoles
 	q := app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles))
 	if len(filterUserCode) > 0 {
-		q = q.Filter("UserCode", filterUserCode)
+		q = q.Filter("SaasUserCode", filterUserCode)
 	}
 	if len(filterRoleCode) > 0 {
 		q = q.Filter("RoleCode", filterRoleCode)
 	}
-	_, err = q.All(&models)
+	_, err = q.OrderBy("RoleCategoryCode", "Id").All(&models)
 	if err != nil {
 		return
 	}

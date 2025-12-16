@@ -10,11 +10,13 @@ import (
 	"github.com/lishimeng/www/examples/internal/db/auth/permissionsTable"
 )
 
-func (h handler) GetUserRouters(userCode string) (list []dto.Menu) {
+func (h handler) GetPermRouters(saasUserCode string) (list []dto.Menu) {
 	var models []permissionsTable.AuthUserRouterView
 	_, _ = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRouterView)).
 		Filter("MenuGroup", www.SystemMenuGroup).
-		Filter("UserCode", userCode).
+		Filter("Status", def.MenuStatusEnabled).
+		Filter("SaasUserCode", saasUserCode).
+		OrderBy("Sort", "CreateTime").
 		All(&models)
 	for _, model := range models {
 		var one dto.Menu
@@ -28,7 +30,9 @@ func (h handler) GetCommonRouters() (list []dto.Menu) {
 	var models []permissionsTable.AuthMenu
 	_, _ = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthMenu)).
 		Filter("MenuGroup", www.SystemMenuGroup).
+		Filter("Status", def.MenuStatusEnabled).
 		Filter("HasPerm", 0).
+		OrderBy("Sort", "CreateTime").
 		All(&models)
 	for _, model := range models {
 		var one dto.Menu
@@ -70,6 +74,7 @@ func (h handler) GetMenuOptionList(group def.MenuGroup) (list []dto.MenuOption, 
 	// 配置，不需要筛选权限
 	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthMenu)).
 		Filter("MenuGroup", group). // todo: 允许菜单有隐藏子菜单
+		Filter("Type", def.MenuTypeCatalog).
 		All(&models)
 	if err != nil {
 		return
@@ -129,7 +134,7 @@ func (h handler) GetMenuList(filterKw string, filterProject def.MenuGroup) (list
 		c = c.Or("Name__contains", filterKw).Or("RouteName__contains", filterKw)
 		q = q.SetCond(c)
 	}
-	_, err = q.All(&models)
+	_, err = q.OrderBy("Sort", "CreateTime").All(&models)
 	if err != nil {
 		return
 	}

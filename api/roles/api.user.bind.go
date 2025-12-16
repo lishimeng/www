@@ -9,9 +9,9 @@ import (
 )
 
 type FormUserRole struct {
-	UserCode    string `json:"userCode,omitempty"` // 这里的UserCode为SecurityCode, 即securityInfo里的编号
-	RoleCode    string `json:"roleCode,omitempty"`
-	ProjectCode string `json:"projectCode,omitempty"`
+	SaasUserCode string `json:"saasUserCode,omitempty"` // Saas user 的唯一码
+	RoleCode     string `json:"roleCode,omitempty"`
+	ProjectCode  string `json:"projectCode,omitempty"`
 }
 
 func apiUserBindRole(ctx server.Context) {
@@ -33,14 +33,14 @@ func apiUserBindRole(ctx server.Context) {
 		ctx.Json(resp)
 		return
 	}
-	if len(req.UserCode) == 0 {
+	if len(req.SaasUserCode) == 0 {
 		resp.Code = http.StatusBadRequest
 		resp.Message = "user code can not be null"
 		ctx.Json(resp)
 		return
 	}
 	var m = getRoleOptManager()
-	_, err = m.BindUser(req.UserCode, req.ProjectCode)
+	_, err = m.BindUser(req.SaasUserCode, req.RoleCode)
 	if err != nil {
 		resp.Code = http.StatusInternalServerError
 		resp.Message = err.Error()
@@ -63,7 +63,7 @@ func apiUserUnbindRole(ctx server.Context) {
 		ctx.Json(resp)
 		return
 	}
-	if len(req.UserCode) == 0 {
+	if len(req.SaasUserCode) == 0 {
 		resp.Code = http.StatusBadRequest
 		resp.Message = "user code can not be null"
 		ctx.Json(resp)
@@ -75,7 +75,7 @@ func apiUserUnbindRole(ctx server.Context) {
 		return
 	}
 	var m = getRoleOptManager()
-	err = m.UnbindUser(req.UserCode, req.ProjectCode)
+	err = m.UnbindUser(req.SaasUserCode, req.RoleCode)
 	if err != nil {
 		resp.Code = http.StatusInternalServerError
 		resp.Message = err.Error()

@@ -11,7 +11,7 @@ import (
 
 type AuthSecurityInfo struct {
 	app.Pk
-	Code           string           `orm:"column(code);unique"`
+	Code           string           `orm:"column(code);unique"`      // userCode; SecurityCode
 	Password       string           `orm:"column(password)"`         // 密码是底线,与其他类型授权区别开对待
 	Platform       def.UserPlatform `orm:"column(platform)"`         // 指定platform后禁止跨平台串账号
 	SecondFaEnable int              `orm:"column(second_fa_enable)"` // 启动2FA

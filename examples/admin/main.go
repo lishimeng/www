@@ -8,8 +8,10 @@ import (
 	"github.com/lishimeng/go-log"
 	"github.com/lishimeng/www/examples/admin/ddd"
 	"github.com/lishimeng/www/examples/admin/setup"
+	"github.com/lishimeng/www/examples/admin/static"
 	"github.com/lishimeng/www/examples/internal/db"
 	"github.com/lishimeng/www/examples/internal/etc"
+	"net/http"
 	"time"
 )
 import _ "github.com/lib/pq"
@@ -63,6 +65,9 @@ func _main() (err error) {
 			EnableDatabaseLog().
 			SetWebLogLevel("debug").
 			EnableWeb(etc.Config.Web.Listen, ddd.Route).
+			EnableStaticWeb(func() http.FileSystem {
+				return http.FS(static.Static)
+			}).
 			ComponentBefore(setup.ComponentBeforeWeb)
 
 		return err

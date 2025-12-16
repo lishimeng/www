@@ -8,6 +8,7 @@ import (
 	"github.com/lishimeng/www/dto"
 )
 
+// 对role进行分组，越高权限越敏感
 func apiRoleCategoryList(ctx server.Context) {
 	var resp app.ResponseWrapper
 	var list []dto.RoleCategory

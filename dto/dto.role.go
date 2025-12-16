@@ -11,14 +11,14 @@ type Role struct {
 	Code             string `json:"code,omitempty"`
 	Name             string `json:"name,omitempty"`
 	RoleCategoryCode string `json:"roleCategoryCode,omitempty"`
-	RoleValue        string `json:"roleValue,omitempty"`
-	ProjectCode      string `json:"projectCode,omitempty"`
-	IsGlobal         bool   `json:"isGlobal,omitempty"`
+	RoleValue        string `json:"roleValue,omitempty"`   // todo: no usage
+	ProjectCode      string `json:"projectCode,omitempty"` // 可以限制一个SaaS Project, 也可以适用于全部 SaaS Project
+	IsGlobal         bool   `json:"isGlobal,omitempty"`    // 同上
 }
 
 type UserRole struct {
 	Id               int    `json:"id,omitempty"`
-	UserCode         string `json:"userCode,omitempty"`
+	SaasUserCode     string `json:"saasUserCode,omitempty"`
 	RoleCategoryCode string `json:"roleCategoryCode,omitempty"`
 	RoleCode         string `json:"roleCode,omitempty"`
 	RoleValue        string `json:"roleValue,omitempty"`

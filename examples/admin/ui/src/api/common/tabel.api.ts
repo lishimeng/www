@@ -19,13 +19,25 @@ export const updateApi = (
   baseUrl: string,
   pk: any,
   p: object,
-) => put(baseUrl + `/${pk}`, p);
+) => {
+  if (pk) {
+    return put(baseUrl + `/${pk}`, p);
+  } else {
+    return put(baseUrl, p);
+  }
+}
 
 export const patchUpdateApi = (
   baseUrl: string,
   pk: any,
   p: object,
-) => patch(baseUrl + `/${pk}`, p);
+) => {
+  if (pk) {
+    return patch(baseUrl + `/${pk}`, p);
+  } else {
+    return patch(baseUrl, p);
+  }
+}
 
 export const deleteApi = (
   baseUrl: string,

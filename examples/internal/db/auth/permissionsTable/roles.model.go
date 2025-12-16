@@ -51,7 +51,7 @@ func (ar *AuthRoles) Convert(src dto.Role) {
 
 type AuthUserRoles struct { // 用户权限列表, 使用user和项目(project/global)确定权限范围
 	app.Pk
-	UserCode         string `orm:"column(user_code)"`
+	SaasUserCode     string `orm:"column(saas_user_code)"`
 	RoleCategoryCode string `orm:"column(role_category_code)"` // 角色类型/冗余
 	RoleCode         string `orm:"column(role_code)"`
 	ProjectCode      string `orm:"column(project_code);null"` // 冗余
@@ -62,7 +62,7 @@ type AuthUserRoles struct { // 用户权限列表, 使用user和项目(project/g
 func (ur *AuthUserRoles) Transform(dst *dto.UserRole) {
 	dst.Id = ur.Id
 	dst.RoleCode = ur.RoleCode
-	dst.UserCode = ur.UserCode
+	dst.SaasUserCode = ur.SaasUserCode
 	dst.ProjectCode = ur.ProjectCode
 	dst.RoleCategoryCode = ur.RoleCategoryCode
 	dst.IsGlobal = ur.IsGlobal == 1

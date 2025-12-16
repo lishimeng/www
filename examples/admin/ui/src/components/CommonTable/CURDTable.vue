@@ -105,6 +105,7 @@ interface CommonTableProps {
   drawerSize?: number | string;
   createEnabled?: boolean;
   updateByPatch?: boolean;
+  updateWithoutPk?: boolean;
 }
 
 const props = withDefaults(defineProps<CommonTableProps>(), {
@@ -115,6 +116,7 @@ const props = withDefaults(defineProps<CommonTableProps>(), {
   drawerSize: "36%",
   createEnabled: true,
   updateByPatch: false,
+  updateWithoutPk: false,
 });
 
 const emit = defineEmits(["onCreated","onUpdated","onDeleted","onChanged","onDialogOpen", "onDialogClosed"]);
@@ -205,16 +207,20 @@ async function submitForm() {
       ElMessage.success(`新增${props.name}成功！`);
       emit("onCreated", state.dialog.data);
     } else {
+      let pk = null;
+      if (!props.updateWithoutPk) {
+        pk = state.dialog.data[props.pk];
+      }
       if (props.updateByPatch) {
         await patchUpdateApi(
           props.url,
-          state.dialog.data[props.pk],
+          pk,
           state.dialog.data
         );
       } else {
         await updateApi(
           props.url,
-          state.dialog.data[props.pk],
+          pk,
           state.dialog.data
         );
       }

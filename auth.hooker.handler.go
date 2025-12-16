@@ -17,6 +17,7 @@ func WithAuth(handler func(ctx server.Context)) []server.Handler {
 			auth.JwtBasic(),
 			auth.Forbidden401Handler(auth.WithJsonResp(), auth.WithScope(SystemScope.Name)))
 	}
+	// todo: if check scope...
 	handlers = append(handlers, handler)
 	return handlers
 }

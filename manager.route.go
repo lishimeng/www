@@ -16,7 +16,7 @@ func NewDbRouteManager(db DomainHandler) RouteManager {
 	return h
 }
 
-func (m *DbRouteManager) GetUserRouters(userCode string) (routers []dto.Menu) {
+func (m *DbRouteManager) GetUserRouters(saasUserCode string) (routers []dto.Menu) {
 	permissionMap := make(map[int]byte)
 
 	commonRouters := m.domain.GetCommonRouters()
@@ -26,11 +26,11 @@ func (m *DbRouteManager) GetUserRouters(userCode string) (routers []dto.Menu) {
 			routers = append(routers, router)
 		}
 	}
-	if len(userCode) == 0 {
+	if len(saasUserCode) == 0 {
 		return
 	}
 
-	userRouters := m.domain.GetUserRouters(userCode)
+	userRouters := m.domain.GetPermRouters(saasUserCode)
 	for _, router := range userRouters {
 		if _, ok := permissionMap[router.GetId()]; !ok {
 			permissionMap[router.GetId()] = 0x01
