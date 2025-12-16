@@ -1,8 +1,56 @@
 import request from "@/utils/request";
+import httpRequest from "@/utils/request";
 
 const USER_BASE_URL = "/api/v1/users";
 
+const IDENTITY_BASE_URL = "/api/identities";
+
 const UserAPI = {
+
+  addIdentity: (
+    identityCode: string,
+    userCode: string,
+    identityType?: number | null
+  ) => httpRequest.request<any, any>({
+    url: IDENTITY_BASE_URL,
+    method: 'post',
+    data: {
+      identityCode,
+      userCode,
+      identityType,
+    }
+  }),
+
+  delIdentity: (
+    identityCode: string,
+    userCode: string,
+    identityType: number | null
+  ) => httpRequest.request<any, any>({
+    url: IDENTITY_BASE_URL,
+    method: 'delete',
+    data: {
+      identityCode,
+      userCode,
+      identityType,
+    }
+  }),
+
+  register: (
+    identityCode: string,
+    identityType: number | null,
+    password: string,
+    platform: number,
+  ) => httpRequest.request<any, any>({
+    url: '/api/users',
+    method: 'post',
+    data: {
+      identityCode,
+      identityType,
+      password,
+      platform,
+    }
+  }),
+
   /**
    * 获取当前登录用户信息
    *

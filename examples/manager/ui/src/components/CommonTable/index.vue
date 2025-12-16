@@ -391,6 +391,10 @@ onMounted(async () => {
   updateOperationWidth();
 });
 
+watch(() => props.url, () => {
+  fetchPageData();
+}, {immediate: false})
+
 watch(() => props.searchItems, () => {
   initSearchForm();
 }, { immediate: true })
