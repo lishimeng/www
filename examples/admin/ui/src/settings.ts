@@ -7,7 +7,7 @@ const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
 
 export const defaultSettings: AppSettings = {
   // 系统Title
-  title: "MES管理平台",
+  title: "ADMIN研发配置",
   // 系统版本
   version: pkg.version,
   // 是否显示设置

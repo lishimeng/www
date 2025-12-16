@@ -20,8 +20,8 @@ type RoleOperationManager interface {
 	EditRole(role *dto.Role) (err error)
 	DelRole(roleCode string) (err error)
 	One(roleCode string) (one dto.Role, err error)
-	BindUser(userCode, roleCode string) (ur dto.UserRole, err error)
-	UnbindUser(userCode, roleCode string) (err error)
+	BindUser(saasUserCode, roleCode string) (ur dto.UserRole, err error)
+	UnbindUser(saasUserCode, roleCode string) (err error)
 	RoleUsers(roleCode string) (list []dto.UserRole, err error)
 }
 type RoleOperationDomainHandler interface {
@@ -30,8 +30,8 @@ type RoleOperationDomainHandler interface {
 	UpdateRole(role *dto.Role) (err error)
 	DelRole(roleCode string) (err error)
 	GetRoleByCode(roleCode string) (role dto.Role, err error)
-	CreateUserRole(userCode, roleCode string) (ur dto.UserRole, err error)
-	DeleteUserRole(userCode, roleCode string) (err error)
+	CreateUserRole(saasUserCode, roleCode string) (ur dto.UserRole, err error)
+	DeleteUserRole(saasUserCode, roleCode string) (err error)
 	GetUserRole(filterUserCode, filterRoleCode string) (list []dto.UserRole, err error)
 }
 
@@ -74,7 +74,7 @@ type IdentityDomainHandler interface {
 }
 
 type MenuDomainHandler interface {
-	GetUserRouters(userCode string) (list []dto.Menu)
+	GetPermRouters(userCode string) (list []dto.Menu)
 	GetCommonRouters() (list []dto.Menu)
 	GetMenu(id int) (menu dto.Menu, err error)
 	AddMenu(menu *dto.ReqMenuForm) (err error)
@@ -94,7 +94,7 @@ type RouteOperationManager interface {
 	DelRoute(id int) (err error)
 	GetRoute(id int) (menu dto.Menu, err error)
 	GetRouteOptions(menuGroup string) (list []dto.MenuOption, err error)
-	GetProjectRoutes(kw, projectCode string) (list []dto.Menu)
+	GetProjectRoutes(kw, menuGroup string) (list []dto.Menu)
 }
 
 type AuthManager interface {

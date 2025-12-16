@@ -26,7 +26,7 @@ type AuthMenu struct {
 	Params    string        `orm:"column(params);size(200)"`      // 查询参数
 	Perm      string        `orm:"column(perm);size(200)"`        // 权限
 	HasPerm   int           `orm:"column(has_perm)"`              // 1:控制权限, 0:公共menu
-	MenuGroup def.MenuGroup `orm:"column(menu_group);null"`       // 菜单所属程序组, 在project中标识
+	MenuGroup def.MenuGroup `orm:"column(menu_group);null"`       // 菜单所属程序组, 在project中标识 没有公共菜单
 	app.TableChangeInfo
 }
 
@@ -51,6 +51,7 @@ func (am *AuthMenu) TransformMenuVO(dst *dto.Menu) {
 	dst.Group = am.MenuGroup
 	dst.CreateTime = am.CreateTime.UTC().Format(time.RFC3339)
 	dst.UpdateTime = am.UpdateTime.UTC().Format(time.RFC3339)
+	dst.Status = am.Status
 
 	if len(am.Params) > 0 {
 		bs := []byte(am.Params)
@@ -94,10 +95,15 @@ func (am *AuthMenu) Convert(src dto.ReqMenuForm) {
 	if len(src.Group) > 0 {
 		am.MenuGroup = src.Group
 	}
+	am.Status = src.Status
 }
 
 func (am *AuthMenu) TransformOption(dst *dto.MenuOption) {
 	dst.Value = fmt.Sprintf("%d", am.Id)
-	dst.ParentId = fmt.Sprintf("%d", am.ParentId)
+	if am.ParentId == 0 {
+		dst.ParentId = ""
+	} else {
+		dst.ParentId = fmt.Sprintf("%d", am.ParentId)
+	}
 	dst.Label = am.Name
 }

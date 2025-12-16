@@ -12,6 +12,7 @@ func (h handler) GetPermissionList(filterUserCode string, _ string) (list []dto.
 	var views []permissionsTable.AuthUserPermView
 	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserPermView)).
 		Filter("UserCode", filterUserCode).
+		OrderBy("Id").
 		All(&views)
 	if err != nil {
 		return
@@ -55,6 +56,7 @@ func (h handler) TxDeletePerm(tx persistence.TxContext, code string) (err error)
 func (h handler) GetAllPerms() (perms []dto.Permission) {
 	var models []permissionsTable.AuthPermissions
 	_, _ = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthPermissions)).
+		OrderBy("Id").
 		All(&models)
 	for _, model := range models {
 		var one dto.Permission
@@ -78,7 +80,7 @@ func (h handler) GetPermsByRole(roleCode string) (perms []dto.Permission) {
 	}
 	var permModels []permissionsTable.AuthPermissions
 	_, _ = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthPermissions)).
-		Filter("Code__in", permCodes).All(&permModels)
+		Filter("Code__in", permCodes).OrderBy("Id").All(&permModels)
 	for _, one := range permModels {
 		var oneDto dto.Permission
 		one.Transform(&oneDto)

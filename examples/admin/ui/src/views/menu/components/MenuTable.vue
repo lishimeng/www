@@ -4,6 +4,7 @@
       ref="tableRef"
       :url="url"
       :columns="columns"
+      :search-items="searchItems"
       full-screen
       default-expand-all
       show-operations-column
@@ -30,6 +31,21 @@
         <template v-if="scope.row.type !== MenuTypeEnum.MENU">
           <span class="flex justify-center text-[var(&#45;&#45;el-text-color-secondary)]">-</span>
         </template>
+      </template>
+      <template #component="scope">
+        <template v-if="scope.row.type !== MenuTypeEnum.MENU">
+          <span class="flex justify-center text-[var(&#45;&#45;el-text-color-secondary)]">-</span>
+        </template>
+      </template>
+      <template #perm="scope">
+          <ForeignKey
+            v-if="scope.row.hasPerm"
+            :url="permissionUrl"
+            :code="scope.row.perm"
+          ></ForeignKey>
+          <span v-else class="text-[var(&#45;&#45;el-text-color-secondary)]">
+            公开
+          </span>
       </template>
       <template #operation="scope">
         <div class="flex">
@@ -162,7 +178,32 @@
           </div>
         </TooltipFormItem>
 
-        <el-form-item label="启用状态">
+        <TooltipFormItem
+          label="权限"
+          prop="hasPerm"
+          tooltip="子菜单会自动继承父级菜单的权限，无需逐一配置"
+        >
+          <el-radio-group v-model="drawerState.data.hasPerm">
+            <el-radio :value="false">无需权限</el-radio>
+            <el-radio :value="true">要求权限</el-radio>
+          </el-radio-group>
+        </TooltipFormItem>
+
+        <el-form-item
+          v-if="drawerState.data.hasPerm"
+          label="权限分组"
+          prop="perm"
+        >
+          <TableSelect
+            v-model="drawerState.data.perm"
+            :url="permissionUrl"
+            placeholder="请选择目录权限"
+            title="选择目录权限"
+            :columns="permissionColumns"
+          />
+        </el-form-item>
+
+        <el-form-item label="启用状态" prop="status">
           <el-radio-group v-model="drawerState.data.status">
             <el-radio :value="1">启用</el-radio>
             <el-radio :value="0">停用</el-radio>
@@ -180,7 +221,7 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item v-if="drawerState.data.type === MenuTypeEnum.MENU" label="缓存页面">
+        <el-form-item v-if="drawerState.data.type === MenuTypeEnum.MENU" label="缓存页面" prop="keepAlive">
           <el-radio-group v-model="drawerState.data.keepAlive">
             <el-radio :value="1">开启</el-radio>
             <el-radio :value="0">关闭</el-radio>
@@ -217,12 +258,13 @@
 </template>
 
 <script setup lang="ts">
-import { TableColumns } from "@/components/CommonTable/types";
+import {SearchItem, TableColumns} from "@/components/CommonTable/types";
 import { useAppStore } from "@/store/modules/app.store";
 import { DeviceEnum } from "@/enums/settings/device.enum";
 import MenuAPI from "@/api/system/menu.api";
 import { withConfirm } from "@/composables/useConfirmDialog";
 import { createApi, deleteApi, updateApi } from "@/api/common/tabel.api";
+import {permissionColumns, permissionUrl} from "@/types/tables/permission.table";
 
 const url = "/api/menus"
 
@@ -283,7 +325,12 @@ const columns: TableColumns[] = [
   {
     prop: "component",
     label: "组件路径",
-    component: "text",
+    component: "custom",
+  },
+  {
+    prop: "perm",
+    label: "权限分组",
+    component: "custom",
   },
   {
     prop: "status",
@@ -319,10 +366,15 @@ const columns: TableColumns[] = [
     component: "time",
   },
 ];
+const searchItems: SearchItem[] = [
+  { prop: "keywords", label: "关键字", placeholder: "名称或路由名称（模糊查询）", component: "input" },
+];
 
 const rules = reactive({
   parentId: [{ required: true, message: "请选择上级菜单", trigger: "blur" }],
   name: [{ required: true, message: "请输入菜单名称", trigger: "blur" }],
+  routeName: [{ required: true, message: "请输入路由名称", trigger: "blur" }],
+  perm: [{ required: true, message: "请选择目录权限", trigger: [] }],
   type: [{ required: true, message: "请选择菜单类型", trigger: "blur" }],
   routePath: [{ required: true, message: "请输入路由路径", trigger: "blur" }],
   component: [{ required: true, message: "请输入组件路径", trigger: "blur" }],
@@ -334,12 +386,15 @@ const menuOptions = ref<OptionType[]>([]);
 
 const initialFormData = {
   id: undefined,
-  parentId: 0,
+  parentId: "0",
   visible: 1,
   sort: 1,
   type: MenuTypeEnum.CATALOG, // 默认菜单
+  group: props.project,
   status: 1,
   keepAlive: 1,
+  hasPerm: false,
+  perm: "",
   params: [],
 };
 

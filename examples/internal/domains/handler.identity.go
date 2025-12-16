@@ -111,6 +111,7 @@ func (h handler) GetIdentityPage(pager *app.Pager[dto.Identity]) (err error) {
 		q := tx.Context.QueryTable(new(usersTable.AuthIdentity))
 		return q
 	}
+	simplePager.OrderByExp = append(simplePager.OrderByExp, "CreateTime")
 	err = app.QueryPage(&simplePager)
 	*pager = simplePager.Pager
 	return err

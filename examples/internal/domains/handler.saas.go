@@ -9,13 +9,14 @@ import (
 )
 
 func (h handler) TxCreateSaasOrg(tx persistence.TxContext, orgCode string, name string, admin string) (org dto.SaasOrganization, err error) {
-	var id int64
 	var model saasTable.SaasOrganization
 	model.Name = name
 	model.Code = orgCode
 	model.AdminUser = admin
-	id, err = tx.Context.Insert(&model)
-	model.Id = int(id)
+	_, err = tx.Context.Insert(&model)
+	if err != nil {
+		return
+	}
 	model.Transform(&org)
 	return
 }
@@ -60,6 +61,7 @@ func (h handler) SaasUserPage(orgCode string, pager *app.Pager[dto.SaasUser]) (e
 		}
 		return q
 	}
+	simplePager.OrderByExp = append(simplePager.OrderByExp, "EnterpriseCode", "CreateTime")
 	err = app.QueryPage(&simplePager)
 	*pager = simplePager.Pager
 	return err
@@ -87,6 +89,7 @@ func (h handler) TxGetSaasUser(tx persistence.TxContext, code string) (u dto.Saa
 func (h handler) GetAllOrgs() (list []dto.SaasOrganization, err error) {
 	var model []saasTable.SaasOrganization
 	_, err = app.GetOrm().Context.QueryTable(new(saasTable.SaasOrganization)).
+		OrderBy("CreateTime").
 		All(&model)
 	if err != nil {
 		return
@@ -114,6 +117,8 @@ func (h handler) GetUserSaasOrgs(userCode string) (list []dto.SaasUser, err erro
 	var model []saasTable.SaasUserInfo
 	_, err = app.GetOrm().Context.QueryTable(new(saasTable.SaasUserInfo)).
 		Filter("SecurityCode", userCode).
+		Filter("Status", def.SaasUserActive).
+		OrderBy("CreateTime").
 		All(&model)
 	if err != nil {
 		return

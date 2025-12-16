@@ -323,11 +323,16 @@ function sizeChange(val: number) {
   fetchPageData();
 }
 
-function handleSortChange({ prop, order }) {
-  sortField.value = prop;
-  sortOrder.value = order === "ascending" ? "asc" : "desc";
+interface SortChangeParam {
+  prop: any,
+  order: string,
+}
+
+function handleSortChange(param: SortChangeParam) {
+  sortField.value = param.prop;
+  sortOrder.value = param.order === "ascending" ? "asc" : "desc";
   // 检查对应列的sortable属性是否为custom
-  if (props.columns.find((column) => column.prop === prop)?.sortable === "custom") {
+  if (props.columns.find((column) => column.prop === param.prop)?.sortable === "custom") {
     state.pagination.pageNo = 1;
     fetchPageData();
   }

@@ -47,6 +47,7 @@ type ReqMenuForm struct {
 	KeepAlive int           `json:"keepAlive"`
 	Params    []MenuParam   `json:"params"`
 	Group     def.MenuGroup `json:"group"` // 菜单所属程序组 - project(app) - menu category
+	Status    int           `json:"status"`
 }
 
 type Menu struct {
@@ -66,6 +67,7 @@ type Menu struct {
 	Params     []MenuParam   `json:"params"`
 	Hidden     int           `json:"hidden"`
 	Group      def.MenuGroup `json:"group"` // 菜单所属程序组
+	Status     int           `json:"status"`
 	Children   []*Menu       `json:"children"`
 	CreateTime string        `json:"createTime"`
 	UpdateTime string        `json:"updateTime"`

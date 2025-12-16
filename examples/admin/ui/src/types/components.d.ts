@@ -84,12 +84,12 @@ declare module "vue" {
     PageModal: (typeof import("./../components/CURD/PageModal.vue"))["default"];
     PageSearch: (typeof import("./../components/CURD/PageSearch.vue"))["default"];
     Pagination: (typeof import("./../components/Pagination/index.vue"))["default"];
-    Quantity: (typeof import("./../components/Quantity/index.vue"))["default"];
     RouterLink: (typeof import("vue-router"))["RouterLink"];
     RouterView: (typeof import("vue-router"))["RouterView"];
     SingleImageUpload: (typeof import("./../components/Upload/SingleImageUpload.vue"))["default"];
     SizeSelect: (typeof import("./../components/SizeSelect/index.vue"))["default"];
     TooltipFormItem: (typeof import("./../components/TooltipFormItem/index.vue"))["default"];
+    UrlSelect: (typeof import("./../components/UrlSelect/index.vue"))["default"];
     WangEditor: (typeof import("./../components/WangEditor/index.vue"))["default"];
   }
   export interface ComponentCustomProperties {

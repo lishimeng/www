@@ -8,7 +8,7 @@ import (
 type AuthUserPermView struct {
 	app.Pk
 	RoleCode       string `orm:"column(role_code);null;readOnly"`
-	UserCode       string `orm:"column(user_code);null"`
+	SaasUserCode   string `orm:"column(saas_user_code);null"`
 	PermissionCode string `orm:"column(permission_code);null"`
 	IsGlobal       int    `orm:"column(is_global);null"`
 }
@@ -20,7 +20,7 @@ func (u *AuthUserPermView) TableName() string {
 func (u *AuthUserPermView) Transform(dst *dto.AuthUserPerm) {
 	dst.Id = u.Id
 	dst.RoleCode = u.RoleCode
-	dst.UserCode = u.UserCode
+	dst.SaasUserCode = u.SaasUserCode
 	dst.PermissionCode = u.PermissionCode
 	dst.IsGlobal = u.IsGlobal
 }
