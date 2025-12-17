@@ -51,6 +51,18 @@ const UserAPI = {
     }
   }),
 
+  resetPassword: (
+    securityCode: string,
+    newPassword: string
+  )=> httpRequest.request<any, any>({
+    url: '/api/users/resetPwd',
+    method: 'post',
+    data: {
+      securityCode,
+      newPassword,
+    }
+  }),
+
   /**
    * 获取当前登录用户信息
    *
@@ -122,13 +134,13 @@ const UserAPI = {
    * @param id 用户ID
    * @param password 新密码
    */
-  resetPassword(id: string, password: string) {
-    return request({
-      url: `${USER_BASE_URL}/${id}/password/reset`,
-      method: "put",
-      params: { password },
-    });
-  },
+  // resetPassword(id: string, password: string) {
+  //   return request({
+  //     url: `${USER_BASE_URL}/${id}/password/reset`,
+  //     method: "put",
+  //     params: { password },
+  //   });
+  // },
 
   /**
    * 批量删除用户，多个以英文逗号(,)分割

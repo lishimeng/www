@@ -33,12 +33,12 @@ export function setupPermission() {
 
       // 已登录用户的正常访问
       const permissionStore = usePermissionStore();
-      // const userStore = useUserStore();
+      const userStore = useUserStore();
 
       // 确保用户信息已加载
-      // if (!userStore.userInfo.username) {
-      //   await userStore.getUserInfo();
-      // }
+      if (!userStore.userInfo.username) {
+        await userStore.getUserInfo();
+      }
 
       // 动态路由生成
       try {

@@ -7,6 +7,7 @@ require (
 	github.com/lishimeng/app-starter v1.21.12
 	github.com/lishimeng/go-log v1.0.0
 	github.com/lishimeng/x v1.3.0
+	github.com/mojocn/base64Captcha v1.3.8
 	github.com/tdewolff/parse/v2 v2.7.12
 )
 
@@ -28,9 +29,9 @@ require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-redis/cache/v9 v9.0.0 // indirect
 	github.com/go-resty/resty/v2 v2.15.1 // indirect
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20240328165702-4d01890c35c0 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
@@ -80,6 +81,7 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.27.0 // indirect
 	golang.org/x/exp v0.0.0-20240404231335-c0f41cb1a7a0 // indirect
+	golang.org/x/image v0.23.0 // indirect
 	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect

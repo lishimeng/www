@@ -7,7 +7,7 @@ const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
 
 export const defaultSettings: AppSettings = {
   // 系统Title
-  title: "MANAGER实施配置",
+  title: "SAAS应用项目",
   // 系统版本
   version: pkg.version,
   // 是否显示设置

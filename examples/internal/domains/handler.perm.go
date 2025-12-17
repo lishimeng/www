@@ -11,7 +11,7 @@ import (
 func (h handler) GetPermissionList(filterUserCode string, _ string) (list []dto.AuthUserPerm, err error) {
 	var views []permissionsTable.AuthUserPermView
 	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserPermView)).
-		Filter("UserCode", filterUserCode).
+		Filter("SaasUserCode", filterUserCode).
 		OrderBy("Id").
 		All(&views)
 	if err != nil {

@@ -9,8 +9,8 @@ import (
 )
 
 type reqResetPassword struct {
-	IdentityCode string `json:"identityCode"`
-	NewPassword  string `json:"newPassword"` // todo: encode ?
+	SecurityCode string `json:"securityCode"`
+	NewPassword  string `json:"newPassword"`
 }
 
 // 特权api，绕开旧密码校验
@@ -27,7 +27,7 @@ func resetPasswordApi(ctx server.Context) {
 		return
 	}
 
-	if len(req.IdentityCode) == 0 {
+	if len(req.SecurityCode) == 0 {
 		resp.Code = http.StatusBadRequest
 		resp.Message = "identity can not be null"
 		ctx.Json(resp)
@@ -42,7 +42,7 @@ func resetPasswordApi(ctx server.Context) {
 	}
 
 	// 设置密码
-	err = UpdatePsw(req.IdentityCode, req.NewPassword, func(_ usersTable.AuthSecurityInfo) bool {
+	err = UpdatePsw(req.SecurityCode, req.NewPassword, func(_ usersTable.AuthSecurityInfo) bool {
 		return true
 	})
 	if err != nil {
