@@ -21,10 +21,11 @@ type redis struct {
 }
 
 type token struct {
-	Enable bool   `toml:"enable"`
-	Issuer string `toml:"issuer"`
-	Key    string `toml:"key"`
-	Ttl    int    `toml:"ttl"`
+	Enable              bool   `toml:"enable"`
+	Issuer              string `toml:"issuer"`
+	Key                 string `toml:"key"`
+	Ttl                 int    `toml:"ttl"`
+	EnableJwtTokenCache bool   `toml:"enableJwtTokenCache"`
 }
 
 type sender struct {

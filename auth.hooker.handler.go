@@ -6,6 +6,7 @@ import (
 )
 
 var EnableAuthChk bool
+var DisableAuthChkScope bool
 
 // WithAuth token验证器,
 // auth.JwtBasic header预处理
@@ -13,11 +14,15 @@ var EnableAuthChk bool
 func WithAuth(handler func(ctx server.Context)) []server.Handler {
 	var handlers []server.Handler
 	if EnableAuthChk {
+		var fbd []func(auth.ForbiddenOption) auth.ForbiddenOption
+		fbd = append(fbd, auth.WithJsonResp())
+		if !DisableAuthChkScope {
+			fbd = append(fbd, auth.WithScope(SystemScope.Name))
+		}
 		handlers = append(handlers,
 			auth.JwtBasic(),
-			auth.Forbidden401Handler(auth.WithJsonResp(), auth.WithScope(SystemScope.Name)))
+			auth.Forbidden401Handler(fbd...))
 	}
-	// todo: if check scope...
 	handlers = append(handlers, handler)
 	return handlers
 }

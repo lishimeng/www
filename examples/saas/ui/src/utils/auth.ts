@@ -23,12 +23,11 @@ export class Auth {
    * @returns 当前有效的访问令牌
    */
   static getAccessToken(): string {
-    // const isRememberMe = Storage.get<boolean>(AUTH_KEYS.REMEMBER_ME, false);
+    const isRememberMe = Storage.get<boolean>(AUTH_KEYS.REMEMBER_ME, false);
     // 根据"记住我"状态决定从哪个存储位置获取token
-    // return isRememberMe
-    //   ? Storage.get(AUTH_KEYS.ACCESS_TOKEN, "")
-    //   : Storage.sessionGet(AUTH_KEYS.ACCESS_TOKEN, "");
-    return "MOCK_TOKEN"
+    return isRememberMe
+      ? Storage.get(AUTH_KEYS.ACCESS_TOKEN, "")
+      : Storage.sessionGet(AUTH_KEYS.ACCESS_TOKEN, "");
   }
 
   /**

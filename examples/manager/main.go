@@ -10,6 +10,8 @@ import (
 	"github.com/lishimeng/www/examples/internal/etc"
 	"github.com/lishimeng/www/examples/manager/ddd"
 	"github.com/lishimeng/www/examples/manager/setup"
+	"github.com/lishimeng/www/examples/manager/static"
+	"net/http"
 	"time"
 )
 import _ "github.com/lib/pq"
@@ -63,6 +65,9 @@ func _main() (err error) {
 			EnableDatabaseLog().
 			SetWebLogLevel("debug").
 			EnableWeb(etc.Config.Web.Listen, ddd.Route).
+			EnableStaticWeb(func() http.FileSystem {
+				return http.FS(static.Static)
+			}).
 			ComponentBefore(setup.ComponentBeforeWeb)
 
 		return err

@@ -1,7 +1,7 @@
-import request, {post} from "@/utils/request";
+import request from "@/utils/request";
 import httpRequest from "@/utils/request";
 
-const USER_BASE_URL = "/api/v1/users";
+const USER_BASE_URL = "/api/users";
 
 const IDENTITY_BASE_URL = "/api/identities";
 
