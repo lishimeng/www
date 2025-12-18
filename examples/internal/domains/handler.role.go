@@ -10,7 +10,7 @@ import (
 func (h handler) GetUserRoleList(userCode string) (role []dto.UserRole, err error) {
 	var models []permissionsTable.AuthUserRoles
 	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles)).
-		Filter("UserCode", userCode).
+		Filter("SaasUserCode", userCode).
 		OrderBy("RoleCategoryCode", "Id").
 		All(&models)
 	if err != nil {

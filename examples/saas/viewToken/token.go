@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"time"
 
-	"gitee.com/xdho/kcbz/internal/ddd/infrastructures"
 	"github.com/lishimeng/app-starter/token"
 	"github.com/lishimeng/go-log"
 	"github.com/lishimeng/x/container"
@@ -17,7 +16,8 @@ const (
 )
 
 func GenRefreshToken(accessToken string) (token string) {
-	tmp := fmt.Sprintf("%s%d%s", accessToken, time.Now().Unix(), infrastructures.GenCode())
+	tmp := fmt.Sprintf("%s%d%s", accessToken, time.Now().Unix(), "")
+	//tmp := fmt.Sprintf("%s%d%s", accessToken, time.Now().Unix(), infrastructures.GenCode())
 	bs := sha512.New().Sum([]byte(tmp))
 	token = base64.URLEncoding.EncodeToString(bs[:])
 	return

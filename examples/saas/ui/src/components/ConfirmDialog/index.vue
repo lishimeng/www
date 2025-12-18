@@ -1,6 +1,6 @@
 <template>
   <Transition name="dialog-fade">
-    <div v-if="visible" class="fixed inset-0 z-2025">
+    <div v-if="visible" class="fixed inset-0 z-3025">
       <!-- 遮罩层 -->
       <div
         class="absolute inset-0 bg-black bg-opacity-50"

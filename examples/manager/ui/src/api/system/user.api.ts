@@ -1,7 +1,7 @@
 import request, {post} from "@/utils/request";
 import httpRequest from "@/utils/request";
 
-const USER_BASE_URL = "/api/v1/users";
+const USER_BASE_URL = "/api/users";
 
 const IDENTITY_BASE_URL = "/api/identities";
 
@@ -206,10 +206,10 @@ const UserAPI = {
   },
 
   /** 修改个人中心用户信息 */
-  updateProfile(data: UserProfileForm) {
+  updateProfile(userCode: string, data: any) {
     return request({
-      url: `${USER_BASE_URL}/profile`,
-      method: "put",
+      url: `/api/profile/${userCode}`,
+      method: "patch",
       data,
     });
   },

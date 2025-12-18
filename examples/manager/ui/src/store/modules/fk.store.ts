@@ -97,9 +97,22 @@ export const useFkStore = defineStore("fk", () => {
     // console.log('cleanup', cache.value)
   }
 
+  function refresh(classPath: string, code: string) {
+    fetchOneApi(classPath, code).then((data) => {
+      if (data) {
+        if (!cache.value[classPath]) {
+          cache.value[classPath] = {}
+        }
+        cache.value[classPath][code] = data
+      }
+      pendingRequests.value[classPath] = pendingRequests.value[classPath].filter(c => c !== code)
+    })
+  }
+
   return {
     get,
     subscribe,
     unsubscribe,
+    refresh,
   }
 })
