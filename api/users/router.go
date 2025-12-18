@@ -38,6 +38,6 @@ func Router(root server.Router) {
 	root.Get("/saas/orgs", www.WithAuth(apiSaasList)...)
 	root.Get("/saas/orgs/{orgCode}", www.WithAuth(apiSassOne)...)
 	root.Get("/saas/my", www.WithAuth(apiMyOrgs)...)
-	root.Get("/me", www.WithAuth(apiMeInfo)...)                        // 登录人 todo
+	//root.Get("/me", www.WithAuth(apiMeInfo)...)                        // 登录人
 	root.Get("/detail/{securityCode}", www.WithAuth(apiUserDetail)...) // 用户详情（包含登录凭证列表）
 }

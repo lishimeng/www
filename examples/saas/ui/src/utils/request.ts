@@ -41,7 +41,7 @@ httpRequest.interceptors.request.use(
  * 响应拦截器 - 统一处理响应和错误
  */
 httpRequest.interceptors.response.use(
-  (response: AxiosResponse<ApiResponse>) => {
+  async (response: AxiosResponse<ApiResponse>) => {
     // 如果响应是二进制流，则直接返回（用于文件下载、Excel 导出等）
     if (response.config.responseType === "blob") {
       return response;
@@ -52,6 +52,9 @@ httpRequest.interceptors.response.use(
     // 请求成功
     if (code === ResultEnum.SUCCESS) {
       return data;
+    } else if (code === ResultEnum.ACCESS_TOKEN_INVALID) {
+      await redirectToLogin("登录已过期，请重新登录");
+      return Promise.reject(new Error(message || "Refresh Token Invalid"));
     }
 
     // 业务错误
@@ -73,6 +76,7 @@ httpRequest.interceptors.response.use(
 
     switch (code) {
       case ResultEnum.ACCESS_TOKEN_INVALID:
+        console.log("Refresh token is invalid, redirecting to login page...")
         await redirectToLogin("登录已过期，请重新登录");
         return Promise.reject(new Error(message || "Refresh Token Invalid"));
 

@@ -21,11 +21,11 @@
       </template>
       <template #operation="scope">
         <div class="flex">
-          <el-button
-            type="text" size="small"
-            :disabled="scope.row.platform !== 20"
-            @click="addIdentity(scope.row.code)"
-          >加入组织</el-button>
+<!--          <el-button-->
+<!--            type="text" size="small"-->
+<!--            :disabled="scope.row.platform !== 20"-->
+<!--            @click="addIdentity(scope.row.code)"-->
+<!--          >加入组织</el-button>-->
           <el-button
             type="text" size="small"
             @click="resetPwdRef.open(scope.row.code, scope.row.code)"
@@ -132,7 +132,7 @@
       </template>
     </el-dialog>
 
-    <ResetPwd ref="resetPwdRef" />
+    <AdminResetPwd ref="resetPwdRef" />
 
   </div>
 </template>
@@ -142,19 +142,14 @@ import type { FormRules } from "element-plus";
 import {identityColumns, securityColumns, securityUrl} from "@/types/tables/identity.table";
 import UserAPI from "@/api/system/user.api";
 import {withConfirm} from "@/composables/useConfirmDialog";
-import ResetPwd from "@/views/security/components/ResetPwd.vue";
+import AdminResetPwd from "@/views/security/components/AdminResetPwd.vue";
+import {IdentityForm} from "@/views/security/types";
 
 const tableRef = ref();
 const identityTableRef = ref();
 const identityFormRef = ref();
 const registerFormRef = ref();
 const resetPwdRef = ref();
-
-interface IdentityForm {
-  code: string,
-  securityCode: string,
-  identityType: number | null,
-}
 
 const identityForm = reactive<IdentityForm>({
   code: "",

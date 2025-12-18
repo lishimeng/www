@@ -7,6 +7,8 @@ import (
 	"github.com/lishimeng/www/api/roles"
 	"github.com/lishimeng/www/api/sdk"
 	"github.com/lishimeng/www/api/users"
+	"github.com/lishimeng/www/examples/manager/ddd/file"
+	"github.com/lishimeng/www/examples/manager/ddd/profile"
 	"github.com/lishimeng/www/examples/manager/ddd/security"
 )
 
@@ -21,4 +23,7 @@ func router(root server.Router) {
 	roles.Router(root.Path("/roles"))
 	users.Router(root.Path("/users"))
 	security.Router(root.Path("/users"))
+	profile.Router(root.Path("/profile"))
+
+	file.Router(root.Path("/v1/files"))
 }

@@ -19,6 +19,7 @@ func RegisterTables() (models []interface{}) {
 		new(usersTable.Auth2FA),
 		new(usersTable.AuthIdentity),
 		new(usersTable.AuthSecurityInfo),
+		new(usersTable.AuthUserProfile),
 		new(saasTable.SaasOrganization),
 		new(saasTable.SaasUserInfo),
 	)
